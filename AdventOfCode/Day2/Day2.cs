@@ -26,7 +26,7 @@
             {
                 return (Cyphers[values[0][0]], RoundStatuses[values[1][0]]);
             }
-            var combinations = input.Split("\r\n", StringSplitOptions.RemoveEmptyEntries)
+            var combinations = input.Split(Environment.NewLine, StringSplitOptions.RemoveEmptyEntries)
                 .Select(s => GetLine(s.Split(" ", StringSplitOptions.RemoveEmptyEntries)));
 
             return combinations.Select(ComputeScore).Sum().ToString();
@@ -67,7 +67,7 @@
 
         public string GetPuzzle(string input)
         {
-            var combinations = input.Split("\r\n", StringSplitOptions.RemoveEmptyEntries)
+            var combinations = input.Split(Environment.NewLine, StringSplitOptions.RemoveEmptyEntries)
                 .Select(s => s.Split(" ", StringSplitOptions.RemoveEmptyEntries).Select(v => Cyphers[v[0]]).ToArray());
 
             return combinations.Select(ComputeScore).Sum().ToString();
