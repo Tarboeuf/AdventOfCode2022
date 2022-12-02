@@ -17,8 +17,8 @@
     {
         public string GetPuzzle(string input)
         {
-            var elves = input.Split("\r\n\r\n", StringSplitOptions.RemoveEmptyEntries)
-                .Select(s => s.Split("\r\n", StringSplitOptions.RemoveEmptyEntries).Select(v => int.Parse(v)).Sum());
+            var elves = input.Split($"{Environment.NewLine}{Environment.NewLine}", StringSplitOptions.RemoveEmptyEntries)
+                .Select(s => s.Split($"{Environment.NewLine}", StringSplitOptions.RemoveEmptyEntries).Select(v => int.Parse(v)).Sum());
 
             return elves.Max().ToString();
         }
