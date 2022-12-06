@@ -61,7 +61,7 @@ namespace AoC
         {
             var day = typeof(IDay);
             var days = AppDomain.CurrentDomain.GetAssemblies().SelectMany(a => a.GetTypes()).Where(t => day.IsAssignableFrom(t));
-            foreach (var item in days)
+            foreach (var item in days.OrderBy(d => d.Name))
             {
                 if (item == day)
                 {
