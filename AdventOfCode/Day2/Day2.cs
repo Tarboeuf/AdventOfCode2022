@@ -79,7 +79,8 @@
             {
                 Chifoumi.Rock => Chifoumi.Paper,
                 Chifoumi.Paper => Chifoumi.Scissors,
-                Chifoumi.Scissors => Chifoumi.Rock
+                Chifoumi.Scissors => Chifoumi.Rock,
+                _ => throw new NotImplementedException()
             };
 
             return (int)values[1] + GetScore(values[0], values[1], loseValue);
