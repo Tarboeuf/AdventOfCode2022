@@ -1,148 +1,97 @@
 ﻿using System.Reflection.Metadata;
 using System.Text.RegularExpressions;
+using AdventOfCode;
 
 namespace AoC.Day8
 {
-    public class LocalTest
+    public class Day8PuzzleBase
     {
-        [Fact]
-        public void Test1()
+        protected int _height;
+        protected int _width;
+        protected byte[][] _trees = new byte[0][];
+
+        protected void InitInput(string input)
         {
-            Assert.Equal(2, Day8Puzzle2Test.GetScore( new byte[]{0, 5,1,2}, 4, 3, x => x - 1));
-            Assert.Equal(2, Day8Puzzle2Test.GetScore( new byte[]{5,1,2}, 3, 2, x => x - 1));
-            Assert.Equal(2, Day8Puzzle2Test.GetScore( new byte[]{5,1,2}, 3, 0, x => x + 1));
-            Assert.Equal(1, Day8Puzzle2Test.GetScore( new byte[]{5,1,2}, 3, 1, x => x + 1));
-            Assert.Equal(0, Day8Puzzle2Test.GetScore( new byte[]{5,1,2}, 3, 2, x => x + 1));
-        }
-    }
-    
-    [Day(ExpectedValue = "2")]
-    public class Day8Puzzle2Test : IDay
-    {
-        public string GetPuzzle(string input)
-        {
-            byte[] bytes= new byte[]{0, 5, 1, 2};
-            return GetScore(bytes, bytes.Length, 3, x => x - 1).ToString();
-        }
-        public static int GetScore(byte[] trees, int width, int x, Func<int, int> funcX)
-        {
-            int newX = funcX(x);
-            
-            if(newX < 0 || newX == width)
-            {
-                return 0;
-            }
-            if (trees[x] < trees[newX])
-            {
-                return 1;
-            }
-            if (trees[x] == trees[newX])
-            {
-                return 1 + GetScore(trees, width, newX, funcX);;
-            }
-            return 1 + GetScore(trees, width, newX, trees[newX], funcX);
-        }
-        
-        public static int GetScore(byte[] trees, int width, int x, byte value, Func<int, int> funcX)
-        {
-            int newX = funcX(x);
-            if (value > trees[newX])
-            {
-                return 0;
-            }
-            if(newX == 0 || newX == width - 1)
-            {
-                return 1;
-            }
-            return 1 + GetScore(trees, width, newX, value, funcX);
-        }
-    }
-    [Day(ExpectedValue = "8")]
-    public class Day8Puzzle2// : IDay
-    {
-        public string GetPuzzle(string input)
-        {
-            var trees = input.Split(Environment.NewLine)
+            _trees = input.Split(Environment.NewLine)
                                 .Select(s => s.Select(c => byte.Parse(c.ToString())).ToArray())
-                                .ToArray();
+                                .ToArray()!;
 
-            int height = trees.Length;
-            int width = trees[0].Length;
 
-            List<int> scores = new List<int>();
-            for (int x = 1; x < width - 1; x++)
-            {
-                for (int y = 1; y < height - 1; y++)
-                {
-                    scores.Add(GetScore(trees, width, height, x, y,trees[x][y], x => x, y => y - 1)
-                        * GetScore(trees, width, height, x, y,trees[x][y], x => x, y => y + 1)
-                        * GetScore(trees, width, height, x, y,trees[x][y], x => x - 1, y => y)
-                        * GetScore(trees, width, height, x, y,trees[x][y], x => x + 1, y => y));
-                }
-            }
+            _height = _trees.Length;
+            _width = _trees[0].Length;
+        }
+    }
 
-            return (scores.Max()).ToString();
+    [Day(ExpectedValue = "8")]
+    public class Day8Puzzle2Test : Day8PuzzleBase, IDay
+    {
+        public string GetPuzzle(string input)
+        {
+            InitInput(input);
+
+            return MyEnumerable.GetTableValues(_height, _width)
+                .Select(v => VisibleCount(v.x, v.y))
+                .Max().ToString();
         }
 
-        public int GetScore(byte[][] trees, int width, int height, int x, int y, byte value, Func<int, int> funcX, Func<int, int> funcY)
+        private int VisibleCount(int x, int y)
         {
-            int newX = funcX(x);
-            int newY = funcY(y);
-            if (value > trees[newX][newY])
+            if (x == 0 || x == _width - 1 || y == 0 || y == _height - 1) { return 0; }
+
+            int tree = _trees[y][x];
+            return GetScore(tree, x, y + 1, 0, 1) *
+                GetScore(tree, x, y - 1, 0, -1) *
+                GetScore(tree, x + 1, y, 1, 0) *
+                GetScore(tree, x - 1, y, -1, 0);
+        }
+
+        private int GetScore(int tree, int x, int y, int xd, int yd)
+        {
+            int count = 0;
+            while (x >= 0 && x < _width && y >= 0 && y < _height)
             {
-                return 1;
+                count++;
+                if (tree <= _trees[y][x])
+                {
+                    return count;
+                }
+                x += xd;
+                y += yd;
             }
-            if (newX == 0 || newX == width - 1 || newY == 0 || newY == height - 1)
-            {
-                return 0;
-            }
-            return 1 + GetScore(trees, width, height, newX, newY, value, funcX, funcY);
+            return count;
         }
     }
 
     [Day(ExpectedValue = "21")]
-    public class Day8Puzzle1 : IDay
+    public class Day8Puzzle1 : Day8PuzzleBase, IDay
     {
         public string GetPuzzle(string input)
         {
-            var trees = input.Split(Environment.NewLine)
-                                .Select(s => s.Select(c => byte.Parse(c.ToString())).ToArray())
-                                .ToArray();
+            InitInput(input);
 
-            int height = trees.Length;
-            int width = trees[0].Length;
+            int nbVisibleTrees = MyEnumerable.GetTableValues(_width - 1, _height - 1, 1, 1).Where(v =>
+                        IsVisible(v.x, v.y, _trees[v.x][v.y], 0, -1)
+                        || IsVisible(v.x, v.y, _trees[v.x][v.y], 0, 1)
+                        || IsVisible(v.x, v.y, _trees[v.x][v.y], -1, 0)
+                        || IsVisible(v.x, v.y, _trees[v.x][v.y], 1, 0))
+                .Count();
 
-            int nbVisibleTrees = 0;
-            for (int x = 1; x < width - 1; x++)
-            {
-                for (int y = 1; y < height - 1; y++)
-                {
-                    if (IsVisible(trees, width, height, x, y,trees[x][y], x => x, y => y - 1)
-                        || IsVisible(trees, width, height, x, y,trees[x][y], x => x, y => y + 1)
-                        || IsVisible(trees, width, height, x, y,trees[x][y], x => x - 1, y => y)
-                        || IsVisible(trees, width, height, x, y,trees[x][y], x => x + 1, y => y))
-                    {
-                        nbVisibleTrees++;
-                    }
-                }
-            }
-
-            return (height * 2 + width * 2 - 4 + nbVisibleTrees).ToString();
+            return (_height * 2 + _width * 2 - 4 + nbVisibleTrees).ToString();
         }
 
-        public bool IsVisible(byte[][] trees, int width, int height, int x, int y, byte value, Func<int, int> funcX, Func<int, int> funcY)
+        public bool IsVisible(int x, int y, byte value, int xd, int yd)
         {
-            int newX = funcX(x);
-            int newY = funcY(y);
-            if (value <= trees[newX][newY])
+            int newX = x + xd;
+            int newY = y + yd;
+            if (value <= _trees[newX][newY])
             {
                 return false;
             }
-            if (newX == 0 || newX == width - 1 || newY == 0 || newY == height - 1)
+            if (newX == 0 || newX == _width - 1 || newY == 0 || newY == _height - 1)
             {
                 return true;
             }
-            return IsVisible(trees,  width, height, newX, newY, value, funcX, funcY);
+            return IsVisible(newX, newY, value, xd, yd);
         }
     }
 }
