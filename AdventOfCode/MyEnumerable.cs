@@ -12,5 +12,23 @@
                 }
             }
         }
+
+        public static void ForEach<T>(this IEnumerable<T> values, Action<T> action)
+        {
+            foreach (var value in values)
+            {
+                action(value);
+            }
+        }
+
+        public static void ForEach<T>(this IEnumerable<T> values, Action<(T item, T? previous)> action)
+        {
+            T? previous = default;
+            foreach (var value in values)
+            {
+                action((value, previous));
+                previous = value;
+            }
+        }
     }
 }
