@@ -2,7 +2,7 @@
 {
 
     [Day(ExpectedValue = "4")]
-    public class Day4Puzzle2 : IDay
+    public class Day04Puzzle2 : IDay
     {
 
         public string GetPuzzle(string input)
@@ -27,7 +27,7 @@
     }
 
     [Day(ExpectedValue = "2")]
-    public class Day4Puzzle1 : IDay
+    public class Day04Puzzle1 : IDay
     {
         public string GetPuzzle(string input)
         {

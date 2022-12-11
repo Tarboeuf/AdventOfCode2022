@@ -1,7 +1,7 @@
 ﻿namespace AoC.Day1
 {
     [Day(ExpectedValue = "45000")]
-    public class Day1Puzzle2 : IDay
+    public class Day01Puzzle2 : IDay
     {
         public string GetPuzzle(string input)
         {
@@ -13,7 +13,7 @@
     }
 
     [Day(ExpectedValue = "24000")]
-    public class Day1Puzzle1 : IDay
+    public class Day01Puzzle1 : IDay
     {
         public string GetPuzzle(string input)
         {

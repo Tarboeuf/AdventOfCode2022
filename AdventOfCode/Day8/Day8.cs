@@ -4,7 +4,7 @@ using AdventOfCode;
 
 namespace AoC.Day8
 {
-    public class Day8PuzzleBase
+    public class Day08PuzzleBase
     {
         protected int _height;
         protected int _width;
@@ -23,7 +23,7 @@ namespace AoC.Day8
     }
 
     [Day(ExpectedValue = "8")]
-    public class Day8Puzzle2Test : Day8PuzzleBase, IDay
+    public class Day08Puzzle2Test : Day08PuzzleBase, IDay
     {
         public string GetPuzzle(string input)
         {
@@ -63,7 +63,7 @@ namespace AoC.Day8
     }
 
     [Day(ExpectedValue = "21")]
-    public class Day8Puzzle1 : Day8PuzzleBase, IDay
+    public class Day08Puzzle1 : Day08PuzzleBase, IDay
     {
         public string GetPuzzle(string input)
         {

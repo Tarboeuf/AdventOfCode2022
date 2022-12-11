@@ -23,8 +23,8 @@ namespace AoC
 
             input = File.OpenText($"{scenario.Path}/input.txt").ReadToEnd();
             result = scenario.Day.GetPuzzle(input);
+            output.WriteLine(scenario.Day.GetType().Name);
             output.WriteLine(result);
-            Console.WriteLine(result);
         }
     }
 

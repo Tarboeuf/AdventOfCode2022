@@ -2,7 +2,7 @@
 {
 
     [Day(ExpectedValue = "12")]
-    public class Day2Puzzle2 : IDay
+    public class Day02Puzzle2 : IDay
     {
         private static Dictionary<char, Chifoumi> Cyphers = new Dictionary<char, Chifoumi>()
             {
@@ -53,7 +53,7 @@
     }
 
     [Day(ExpectedValue = "15")]
-    public class Day2Puzzle1 : IDay
+    public class Day02Puzzle1 : IDay
     {
         private static Dictionary<char, Chifoumi> Cyphers = new Dictionary<char, Chifoumi>()
             {

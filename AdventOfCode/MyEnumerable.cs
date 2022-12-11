@@ -12,6 +12,15 @@
                 }
             }
         }
+        public static ulong Product(this IEnumerable<int> values)
+        {
+            ulong result = 1;
+            foreach(int value in values)
+            {
+                result *= (ulong)value;
+            }
+            return result;
+        }
 
         public static void ForEach<T>(this IEnumerable<T> values, Action<T> action)
         {

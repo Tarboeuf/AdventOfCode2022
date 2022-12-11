@@ -6,7 +6,7 @@ using System.Text;
 namespace AoC.Day9
 {
     [Day(ExpectedValue = "1")]
-    public class Day9Puzzle2 : IDay
+    public class Day09Puzzle2 : IDay
     {
         [Fact]
         public void Test2()
@@ -126,7 +126,7 @@ U 20";
     }
 
     [Day(ExpectedValue = "13")]
-    public class Day9Puzzle1 : IDay
+    public class Day09Puzzle1 : IDay
     {
         public string GetPuzzle(string input)
         {
