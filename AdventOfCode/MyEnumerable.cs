@@ -12,6 +12,16 @@
                 }
             }
         }
+
+        public static IEnumerable<T> Include<T>(this IEnumerable<T> values, T value)
+        {
+            foreach (var item in values)
+            {
+                yield return item;
+            }
+            yield return value;
+        }
+
         public static ulong Product(this IEnumerable<int> values)
         {
             ulong result = 1;
