@@ -49,5 +49,13 @@
                 previous = value;
             }
         }
+
+        public static IEnumerable<string> GetLines(this string input, string extraSplit = "")
+        {
+            foreach (var item in input.Split(Environment.NewLine + extraSplit, StringSplitOptions.RemoveEmptyEntries))
+            {
+                yield return item;
+            }
+        }
     }
 }
