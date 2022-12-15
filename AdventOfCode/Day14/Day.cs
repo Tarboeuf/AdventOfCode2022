@@ -1,5 +1,4 @@
 ﻿using AdventOfCode;
-using System;
 using System.Text;
 
 namespace AoC.Day14
@@ -7,14 +6,13 @@ namespace AoC.Day14
     [Day(ExpectedValue = "93")]
     public class Day14Puzzle2 : IDay
     {
-        int height;
-        HashSet<(int x, int y)> coord = new HashSet<(int x, int y)>();
-        HashSet<(int x, int y)> addedPoints = new HashSet<(int x, int y)>();
-        HashSet<(int, int)> testedPoints = new HashSet<(int, int)>();
+        private int _height;
+        private HashSet<(int x, int y)> _rocks = new HashSet<(int x, int y)>();
+        private HashSet<(int x, int y)> _sands = new HashSet<(int x, int y)>();
 
         public string GetPuzzle(string input)
         {
-            coord = input.GetLines()
+            _rocks = input.GetLines()
                 .Select(line => line.Split(" -> ")
                     .Select(c => c.Split(','))
                     .Select(c => (int.Parse(c[0]), int.Parse(c[1])))
@@ -22,63 +20,70 @@ namespace AoC.Day14
                 .SelectMany(GetAllCoord)
                 .ToHashSet();
 
-            height = coord.Select(c => c.y).Max();
-            addedPoints = new HashSet<(int x, int y)>();
+            _height = _rocks.Select(c => c.y).Max();
+            _sands = new HashSet<(int x, int y)>();
             while (true)
             {
                 int startY = 0;
+                int startX = 500;
 
-                int x = 500;
-                int startX = x;
-                testedPoints = new HashSet<(int x, int y)>();
                 while (true)
                 {
-                    var newY = GetBottomPoint(coord, height, x, startY) + 1;
-                    if (testedPoints.Contains((x, startY)))
+                    var bottom = GetBottomPoint(startX, startY) + 1;
+                    if (ArrivedToTop(bottom))
                     {
                         Print();
-                        throw new Exception("Infinite loop");
+                        return _sands.Count.ToString();
                     }
-                    testedPoints.Add((x, startY));
-                    if (newY == 0)
+                    if (HasToRest(startX, bottom))
                     {
-                        Print();
-                        return addedPoints.Count.ToString();
-                    }
-                    if ((coord.Contains((x - 1, newY)) && coord.Contains((x + 1, newY))) || newY == height + 2)
-                    {
-                        coord.Add((x, newY - 1));
-                        addedPoints.Add((x, newY - 1));
+                        _sands.Add((startX, bottom - 1));
                         break;
                     }
-                    if (!coord.Contains((x - 1, newY)))
+                    if (!IsCoordUsed((startX - 1, bottom)))
                     {
-                        x--;
-                        startY = newY;
+                        startX--;
+                        startY = bottom;
                         continue;
                     }
                     else
                     {
-                        x++;
-                        startY = newY;
+                        startX++;
+                        startY = bottom;
                         continue;
                     }
                 }
             }
         }
 
+        private static bool ArrivedToTop(int bottom)
+        {
+            return bottom == 0;
+        }
+
+        private bool HasToRest(int x, int y)
+        {
+            var left = (x - 1, y);
+            var right = (x + 1, y);
+            return y == _height + 2 || IsCoordUsed(left) && IsCoordUsed(right);
+        }
+
+        private bool IsCoordUsed((int x, int y) point)
+        {
+            return _rocks.Contains(point) || _sands.Contains(point);
+        }
+
         public void Print()
         {
-            return;
-            int minWidth = coord.Select(x => x.x).Min();
-            int maxWidth = coord.Select(x => x.x).Max();
+            int minWidth = _rocks.Select(x => x.x).Min();
+            int maxWidth = _rocks.Select(x => x.x).Max();
 
             StringBuilder sb = new StringBuilder();
-            for (int y = 0; y <= height + 1; y++)
+            for (int y = 0; y <= _height + 1; y++)
             {
                 for (int x = minWidth; x <= maxWidth; x++)
                 {
-                    sb.Append(coord.Contains((x, y)) ? addedPoints.Contains((x, y)) ? "o" : "#" : ".");
+                    sb.Append(_rocks.Contains((x, y)) ? _sands.Contains((x, y)) ? "o" : "#" : ".");
                 }
                 sb.AppendLine();
             }
@@ -90,17 +95,17 @@ namespace AoC.Day14
             Console.WriteLine(sb.ToString());
         }
 
-        private static int GetBottomPoint(HashSet<(int x, int y)> coord, int height, int x, int startY)
+        private int GetBottomPoint(int startX, int startY)
         {
-            for (int y = startY; y <= height + 2; y++)
+            for (int y = startY; y <= _height + 2; y++)
             {
-                if (coord.Contains((x, y)) || y == height + 2)
+                if (IsCoordUsed((startX, y)) || y == _height + 2)
                 {
                     return y - 1;
                 }
             }
 
-            return height;
+            return _height;
         }
 
         private IEnumerable<(int, int)> GetAllCoord(IEnumerable<(int x, int y)> line)
@@ -125,13 +130,13 @@ namespace AoC.Day14
     public class Day14Puzzle1 : IDay
     {
         int height;
-        HashSet<(int x, int y)> coord = new HashSet<(int x, int y)>();
-        HashSet<(int x, int y)> addedPoints = new HashSet<(int x, int y)>();
+        HashSet<(int x, int y)> rocks = new HashSet<(int x, int y)>();
+        HashSet<(int x, int y)> sands = new HashSet<(int x, int y)>();
         HashSet<(int, int)> testedPoints = new HashSet<(int, int)>();
 
         public string GetPuzzle(string input)
         {
-            coord = input.GetLines()
+            rocks = input.GetLines()
                 .Select(line => line.Split(" -> ")
                     .Select(c => c.Split(','))
                     .Select(c => (int.Parse(c[0]), int.Parse(c[1])))
@@ -139,8 +144,8 @@ namespace AoC.Day14
                 .SelectMany(GetAllCoord)
                 .ToHashSet();
 
-            height = coord.Select(c => c.y).Max();
-            addedPoints = new HashSet<(int x, int y)>();
+            height = rocks.Select(c => c.y).Max();
+            sands = new HashSet<(int x, int y)>();
 
             while (true)
             {
@@ -151,7 +156,7 @@ namespace AoC.Day14
                 testedPoints = new HashSet<(int x, int y)>();
                 while (true)
                 {
-                    var newY = GetBottomPoint(coord, height, x, startY) + 1;
+                    var newY = GetBottomPoint(rocks, height, x, startY) + 1;
                     if(testedPoints.Contains((x, startY)))
                     {
                         Print();
@@ -161,15 +166,15 @@ namespace AoC.Day14
                     if (newY > height)
                     {
                         Print();
-                        return addedPoints.Count.ToString();
+                        return sands.Count.ToString();
                     }
-                    if(coord.Contains((x-1, newY)) && coord.Contains((x + 1, newY)))
+                    if(rocks.Contains((x-1, newY)) && rocks.Contains((x + 1, newY)))
                     {
-                        coord.Add((x, newY - 1));
-                        addedPoints.Add((x, newY - 1));
+                        rocks.Add((x, newY - 1));
+                        sands.Add((x, newY - 1));
                         break;
                     }
-                    if (!coord.Contains((x - 1, newY)))
+                    if (!rocks.Contains((x - 1, newY)))
                     {
                         x--;
                         startY = newY;
@@ -187,15 +192,15 @@ namespace AoC.Day14
 
         public void Print()
         {
-            int minWidth = coord.Select(x => x.x).Min();
-            int maxWidth = coord.Select(x => x.x).Max();
+            int minWidth = rocks.Select(x => x.x).Min();
+            int maxWidth = rocks.Select(x => x.x).Max();
 
             StringBuilder sb = new StringBuilder();
             for (int y = 0; y <= height; y++)
             {
                 for (int x = minWidth; x <= maxWidth; x++)
                 {
-                    sb.Append(coord.Contains((x, y)) ? addedPoints.Contains((x,y)) ? "o" : "#" : ".");
+                    sb.Append(rocks.Contains((x, y)) ? sands.Contains((x,y)) ? "o" : "#" : ".");
                 }
                 sb.AppendLine();
             }
