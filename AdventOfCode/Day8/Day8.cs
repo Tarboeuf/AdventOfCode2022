@@ -23,9 +23,9 @@ namespace AoC.Day8
     }
 
     [Day(ExpectedValue = "8")]
-    public class Day08Puzzle2Test : Day08PuzzleBase, IDay
+    public class Day08Puzzle2 : Day08PuzzleBase, IDay
     {
-        public string GetPuzzle(string input)
+        public string GetPuzzle(string input, bool isRealCase)
         {
             InitInput(input);
 
@@ -65,7 +65,7 @@ namespace AoC.Day8
     [Day(ExpectedValue = "21")]
     public class Day08Puzzle1 : Day08PuzzleBase, IDay
     {
-        public string GetPuzzle(string input)
+        public string GetPuzzle(string input, bool isRealCase)
         {
             InitInput(input);
 

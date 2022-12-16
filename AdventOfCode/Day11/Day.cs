@@ -6,7 +6,7 @@ namespace AoC.Day11
     [Day(ExpectedValue = "2713310158")]
     public class Day11Puzzle2 : IDay
     {
-        public string GetPuzzle(string input)
+        public string GetPuzzle(string input, bool isRealCase)
         {
             List<Monkey> monkeys = new List<Monkey>();
             foreach(var group in input.Split(Environment.NewLine + Environment.NewLine))
@@ -34,8 +34,8 @@ namespace AoC.Day11
                     while(monkey.StartingItems.TryDequeue(out ulong item))
                     {
                         monkey.NbInspectedItems++;
-                        item = monkey.WorryOpertation(item) % modulo;
-                        int throwId = monkey.Test(item) ? monkey.TrueId : monkey.FalseId;
+                        item = monkey.WorryOpertation!(item) % modulo;
+                        int throwId = monkey.Test!(item) ? monkey.TrueId : monkey.FalseId;
                         lookUp[throwId].StartingItems.Enqueue(item);
                     }
                 }
@@ -65,7 +65,7 @@ namespace AoC.Day11
     [Day(ExpectedValue = "10605")]
     public class Day11Puzzle1 : IDay
     {
-        public string GetPuzzle(string input)
+        public string GetPuzzle(string input, bool isRealCase)
         {
             List<Monkey> monkeys = new List<Monkey>();
             foreach(var group in input.Split(Environment.NewLine + Environment.NewLine))
@@ -90,8 +90,8 @@ namespace AoC.Day11
                     while(monkey.StartingItems.TryDequeue(out ulong item))
                     {
                         monkey.NbInspectedItems++;
-                        item = monkey.WorryOpertation(item) / 3;
-                        int throwId = monkey.Test(item) ? monkey.TrueId : monkey.FalseId;
+                        item = monkey.WorryOpertation!(item) / 3;
+                        int throwId = monkey.Test!(item) ? monkey.TrueId : monkey.FalseId;
                         lookUp[throwId].StartingItems.Enqueue(item);
                     }
                 }
@@ -122,9 +122,9 @@ namespace AoC.Day11
     {
         public int Id { get; set; }
         public Queue<ulong> StartingItems { get; set; } = new Queue<ulong>();
-        public Func<ulong, ulong> WorryOpertation { get; set; }
+        public Func<ulong, ulong>? WorryOpertation { get; set; }
 
-        public Func<ulong, bool> Test { get; set; }
+        public Func<ulong, bool>? Test { get; set; }
         public int TrueId { get; set; }
         public int FalseId { get; set; }
         public int Diviser { get; set; }

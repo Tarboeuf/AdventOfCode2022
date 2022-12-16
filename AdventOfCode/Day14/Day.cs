@@ -10,7 +10,7 @@ namespace AoC.Day14
         private HashSet<(int x, int y)> _rocks = new HashSet<(int x, int y)>();
         private HashSet<(int x, int y)> _sands = new HashSet<(int x, int y)>();
 
-        public string GetPuzzle(string input)
+        public string GetPuzzle(string input, bool isRealCase)
         {
             _rocks = input.GetLines()
                 .Select(line => line.Split(" -> ")
@@ -134,7 +134,7 @@ namespace AoC.Day14
         HashSet<(int x, int y)> sands = new HashSet<(int x, int y)>();
         HashSet<(int, int)> testedPoints = new HashSet<(int, int)>();
 
-        public string GetPuzzle(string input)
+        public string GetPuzzle(string input, bool isRealCase)
         {
             rocks = input.GetLines()
                 .Select(line => line.Split(" -> ")

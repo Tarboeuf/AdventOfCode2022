@@ -7,7 +7,7 @@ namespace AoC.Day5
     [Day(ExpectedValue = "MCD")]
     public class Day05Puzzle2 : IDay
     {
-        public string GetPuzzle(string input)
+        public string GetPuzzle(string input, bool isRealCase)
         {
             var part = input.Split(Environment.NewLine + Environment.NewLine, StringSplitOptions.RemoveEmptyEntries);
             var stacks = GetStacks(part[0]);
@@ -71,7 +71,7 @@ namespace AoC.Day5
     [Day(ExpectedValue = "CMZ")]
     public class Day05Puzzle1 : IDay
     {
-        public string GetPuzzle(string input)
+        public string GetPuzzle(string input, bool isRealCase)
         {
             var part = input.Split(Environment.NewLine + Environment.NewLine, StringSplitOptions.RemoveEmptyEntries);
             var stacks = GetStacks(part[0]);

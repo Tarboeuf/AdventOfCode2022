@@ -5,7 +5,7 @@
     public class Day03Puzzle2 : IDay
     {
 
-        public string GetPuzzle(string input)
+        public string GetPuzzle(string input, bool isRealCase)
         {
             return GetThreeItems(input.Split(Environment.NewLine, StringSplitOptions.RemoveEmptyEntries))
                 .Select(s => s[0].Intersect(s[1]).Intersect(s[2]).First())
@@ -31,7 +31,7 @@
     [Day(ExpectedValue = "157")]
     public class Day03Puzzle1 : IDay
     {
-        public string GetPuzzle(string input)
+        public string GetPuzzle(string input, bool isRealCase)
         {
             return input.Split(Environment.NewLine, StringSplitOptions.RemoveEmptyEntries)
                 .Select(s => s[..(s.Length/2)].Intersect(s[(s.Length/2)..]).Single())

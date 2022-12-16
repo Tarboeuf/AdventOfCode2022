@@ -5,7 +5,7 @@
     public class Day04Puzzle2 : IDay
     {
 
-        public string GetPuzzle(string input)
+        public string GetPuzzle(string input, bool isRealCase)
         {
             return input.Split(Environment.NewLine, StringSplitOptions.RemoveEmptyEntries)
                 .Select(s => s.Split(',', StringSplitOptions.RemoveEmptyEntries).Select(GetAllValues).ToArray())
@@ -29,7 +29,7 @@
     [Day(ExpectedValue = "2")]
     public class Day04Puzzle1 : IDay
     {
-        public string GetPuzzle(string input)
+        public string GetPuzzle(string input, bool isRealCase)
         {
             return input.Split(Environment.NewLine, StringSplitOptions.RemoveEmptyEntries)
                 .Select(s => s.Split(',', StringSplitOptions.RemoveEmptyEntries).Select(GetAllValues).ToArray())

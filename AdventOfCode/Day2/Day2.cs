@@ -20,7 +20,7 @@
 
 
 
-        public string GetPuzzle(string input)
+        public string GetPuzzle(string input, bool isRealCase)
         {
             (Chifoumi,RoundStatus) GetLine(string[] values)
             {
@@ -65,7 +65,7 @@
                 {'Z', Chifoumi.Scissors },
             };
 
-        public string GetPuzzle(string input)
+        public string GetPuzzle(string input, bool isRealCase)
         {
             var combinations = input.Split(Environment.NewLine, StringSplitOptions.RemoveEmptyEntries)
                 .Select(s => s.Split(" ", StringSplitOptions.RemoveEmptyEntries).Select(v => Cyphers[v[0]]).ToArray());

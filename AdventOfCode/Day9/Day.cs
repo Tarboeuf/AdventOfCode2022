@@ -19,10 +19,10 @@ R 17
 D 10
 L 25
 U 20";
-            Assert.Equal("36", GetPuzzle(input));
+            Assert.Equal("36", GetPuzzle(input, false));
         }
 
-        public string GetPuzzle(string input)
+        public string GetPuzzle(string input, bool isRealCase)
         {
             var maxItemInQueue = 10;
             (int x, int y)[] tailPositions = new (int x, int y)[maxItemInQueue];
@@ -128,7 +128,7 @@ U 20";
     [Day(ExpectedValue = "13")]
     public class Day09Puzzle1 : IDay
     {
-        public string GetPuzzle(string input)
+        public string GetPuzzle(string input, bool isRealCase)
         {
             HashSet<(int x, int y)> tailPositions = new HashSet<(int x, int y)>();
 

@@ -2,6 +2,6 @@
 {
     public interface IDay
     {
-        string GetPuzzle(string input);
+        string GetPuzzle(string input, bool isRealCase);
     }
 }

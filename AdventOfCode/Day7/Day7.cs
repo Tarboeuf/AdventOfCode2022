@@ -6,7 +6,7 @@ namespace AoC.Day7
     [Day(ExpectedValue = "24933642")]
     public class Day07Puzzle2 : Day7PuzzleBase, IDay
     {
-        public string GetPuzzle(string input)
+        public string GetPuzzle(string input, bool isRealCase)
         {
             var fileSystem = GetTree(input);
             var totalSize = fileSystem.GetSize();
@@ -23,7 +23,7 @@ namespace AoC.Day7
     [Day(ExpectedValue = "95437")]
     public class Day07Puzzle1 : Day7PuzzleBase, IDay
     {
-        public string GetPuzzle(string input)
+        public string GetPuzzle(string input, bool isRealCase)
         {
             return GetTree(input).GetFiles()
                 .Where(d => d.IsDirectory)

@@ -7,7 +7,7 @@ namespace AoC.Day6
     [Day(ExpectedValue = "19")]
     public class Day06Puzzle2 : IDay
     {
-        public string GetPuzzle(string input)
+        public string GetPuzzle(string input, bool isRealCase)
         {
             for(int i = 0; i < input.Length; i++)
             {
@@ -23,7 +23,7 @@ namespace AoC.Day6
     [Day(ExpectedValue = "7")]
     public class Day06Puzzle1 : IDay
     {
-        public string GetPuzzle(string input)
+        public string GetPuzzle(string input, bool isRealCase)
         {
             for(int i = 0; i < input.Length; i++)
             {

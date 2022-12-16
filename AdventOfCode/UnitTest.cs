@@ -1,6 +1,7 @@
 using Xunit.Abstractions;
 using System.Collections;
 using System.Reflection;
+using System.Text;
 
 namespace AoC
 {
@@ -17,14 +18,38 @@ namespace AoC
         [ClassData(typeof(TestData))]
         public void TestPuzzle(TestScenario scenario)
         {
+            Console.SetOut(new Converter(output));
             string input = File.OpenText($"{scenario.Path}/testInput.txt").ReadToEnd();
-            var result = scenario.Day.GetPuzzle(input);
+            var result = scenario.Day.GetPuzzle(input, false);
             Assert.Equal(scenario.ExpectedResult, result);
 
             input = File.OpenText($"{scenario.Path}/input.txt").ReadToEnd();
-            result = scenario.Day.GetPuzzle(input);
+            result = scenario.Day.GetPuzzle(input, true);
             output.WriteLine(scenario.Day.GetType().Name);
             output.WriteLine(result);
+        }
+    }
+
+    public class Converter : TextWriter
+    {
+        ITestOutputHelper _output;
+        public Converter(ITestOutputHelper output)
+        {
+            _output = output;
+        }
+        public override Encoding Encoding => Encoding.UTF8;
+        public override void WriteLine(string? message)
+        {
+            _output.WriteLine(message);
+        }
+        public override void WriteLine(string format, params object?[] args)
+        {
+            _output.WriteLine(format, args);
+        }
+
+        public override void Write(char value)
+        {
+            throw new NotSupportedException("This text writer only supports WriteLine(string) and WriteLine(string, params object[]).");
         }
     }
 
@@ -71,7 +96,7 @@ namespace AoC
                 var attribute = item.GetCustomAttribute<DayAttribute>();
                 if (attribute == null)
                 {
-                    throw new InvalidDataException("attribute");
+                    continue;
                 }
                 if (item.Namespace == null)
                 {

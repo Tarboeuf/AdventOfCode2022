@@ -12,7 +12,7 @@ namespace AoC.Day10
 ")]
     public class Day10Puzzle2 : IDay
     {
-        public string GetPuzzle(string input)
+        public string GetPuzzle(string input, bool isRealCase)
         {
             int cycleNumber = 1;
             int value = 1;
@@ -52,7 +52,7 @@ namespace AoC.Day10
     [Day(ExpectedValue = "13140")]
     public class Day10Puzzle1 : IDay
     {
-        public string GetPuzzle(string input)
+        public string GetPuzzle(string input, bool isRealCase)
         {
             int cycleNumber = 1;
             long value = 1;

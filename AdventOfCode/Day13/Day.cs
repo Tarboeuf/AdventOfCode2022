@@ -4,12 +4,10 @@ using System.ComponentModel.DataAnnotations;
 
 namespace AoC.Day13
 {
-
-
     [Day(ExpectedValue = "140")]
     public class Day13Puzzle2 : Day13PuzzleBase, IDay
     {
-        public string GetPuzzle(string input)
+        public string GetPuzzle(string input, bool isRealCase)
         {
             var packet2 = GetPacket("[[2]]");
             var packet6 = GetPacket("[[6]]");
@@ -21,17 +19,6 @@ namespace AoC.Day13
                 .ToList();
 
             return ((orderedList.IndexOf(packet2) + 1) * (orderedList.IndexOf(packet6) + 1)).ToString();
-        }
-
-
-        private bool IsRightOrder(List<PacketBase> packets)
-        {
-            PacketBase left = packets[0];
-            PacketBase right = packets[1];
-
-            var result = left.CompareTo(right) < 0;
-
-            return result;
         }
     }
 
@@ -86,7 +73,7 @@ namespace AoC.Day13
     [Day(ExpectedValue = "13")]
     public class Day13Puzzle1 : Day13PuzzleBase, IDay
     {
-        public string GetPuzzle(string input)
+        public string GetPuzzle(string input, bool isRealCase)
         {
             return input.GetLines(Environment.NewLine)
                 .Select(g => g.GetLines().Select(GetPacket).ToList())

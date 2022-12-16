@@ -1,8 +1,4 @@
 ﻿using AdventOfCode;
-using System.IO;
-using System.Linq;
-using System.Runtime.CompilerServices;
-using System.Text;
 
 namespace AoC.Day12
 {
@@ -14,7 +10,7 @@ namespace AoC.Day12
         private int _height;
         private char[][]? _square;
 
-        public string GetPuzzle(string input)
+        public string GetPuzzle(string input, bool isRealCase)
         {
             _square = input.Split(Environment.NewLine)
                 .Select(l => l.ToCharArray()).ToArray();
@@ -33,8 +29,7 @@ namespace AoC.Day12
 
             var gr = new Graph<(int x, int y)>(graph);
 
-            var algorithms = new Algorithms();
-            var values = startPosition.Select(p => algorithms.ShortestPathFunction(gr, p)(endPosition));
+            var values = startPosition.Select(p => Algorithms.ShortestPathFunction(gr, p)(endPosition));
 
 
             return values.Where(v => v != null).Select(v => v!.Count() - 1).Min().ToString();
@@ -73,7 +68,7 @@ namespace AoC.Day12
         private int _height;
         private char[][]? _square;
 
-        public string GetPuzzle(string input)
+        public string GetPuzzle(string input, bool isRealCase)
         {
             _square = input.Split(Environment.NewLine)
                 .Select(l => l.ToCharArray()).ToArray();
@@ -90,8 +85,7 @@ namespace AoC.Day12
 
             var gr = new Graph<(int x, int y)>(graph);
 
-            var algorithms = new Algorithms();
-            var function = algorithms.ShortestPathFunction(gr, startPosition);
+            var function = Algorithms.ShortestPathFunction(gr, startPosition);
             
 
             return (function(endPosition)!.Count() - 1).ToString();
@@ -117,68 +111,6 @@ namespace AoC.Day12
         {
             var c = _square![newPosition.x][newPosition.y];
             return c == 'E' ? (char)('z' + 1) : c == 'S' ? (char)('a' - 1) : c;
-        }
-    }
-
-
-    public class Graph<T>
-        where T : notnull
-    {
-        private readonly Dictionary<T, HashSet<T>> _adjacencyList;
-
-        public Graph(Dictionary<T, HashSet<T>> adjacencyList)
-        {
-            _adjacencyList = adjacencyList;
-        }
-
-        public Dictionary<T, HashSet<T>> AdjacencyList => _adjacencyList;
-    }
-
-
-    public class Algorithms
-    {
-        public Func<T, IEnumerable<T>?> ShortestPathFunction<T>(Graph<T> graph, T start)
-            where T : notnull
-        {
-            var previous = new Dictionary<T, T>();
-
-            var queue = new Queue<T>();
-            queue.Enqueue(start);
-
-            while (queue.Count > 0)
-            {
-                var vertex = queue.Dequeue();
-                foreach (var neighbor in graph.AdjacencyList[vertex])
-                {
-                    if (previous.ContainsKey(neighbor))
-                        continue;
-
-                    previous[neighbor] = vertex;
-                    queue.Enqueue(neighbor);
-                }
-            }
-
-            Func<T, IEnumerable<T>?> shortestPath = v => {
-                var path = new List<T> { };
-
-                var current = v;
-                while (!current!.Equals(start))
-                {
-                    path.Add(current);
-                    if(!previous.ContainsKey(current))
-                    {
-                        return null;
-                    }
-                    current = previous[current];
-                };
-
-                path.Add(start);
-                path.Reverse();
-
-                return path;
-            };
-
-            return shortestPath;
         }
     }
 }
